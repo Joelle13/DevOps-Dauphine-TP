@@ -35,7 +35,7 @@ Nous allons créer les ressources suivantes à l'aide de Terraform :
 - un compte utilisateur de la base de données
 
 1. Commencer par créer le bucket GCS (Google Cloud Storage) qui servira à stocker le state Terraform.  
-***Avec ces commandes : ***
+***Avec ces commandes :***
 - gcloud services enable cloudbuild. PROJECT_ID=$(gcloud config get-value project)
 - gsutil mb gs://${PROJECT_ID}-tfstate
 Ou sinon aller directement sur l'interface Bucket de GCP et le créer à la main (ce que j'ai fait car erreur de permission)
@@ -53,7 +53,7 @@ Ou sinon aller directement sur l'interface Bucket de GCP et le créer à la main
       }
       ```
 
-***Ajout du main.tf.***
+***Ajout du main.tf.***  
 4. Lancer `terraform plan`, vérifier les changements puis appliquer les changements avec `terraform apply`  
 ***Lancement des commandes :***
 - terraform init : Terraform has been successfully initialized!
@@ -142,7 +142,7 @@ Notre but, ne l'oublions pas est de déployer wordpress sur Cloud Run puis Kuber
 ### Configurer l'adresse IP de la base MySQL utilisée par Wordpress
 
 1. Rendez vous sur : https://console.cloud.google.com/sql/instances/main-instance/connections/summary?
-   L'instance de base données dispose d'une `Adresse IP publique`. Nous allons nous servir de cette valeur pour configurer notre image docker Wordpress qui s'y connectera.
+   L'instance de base données dispose d'une `Adresse IP publique`. Nous allons nous servir de cette valeur pour configurer notre image docker Wordpress qui s'y connectera.  ***34.58.87.242***
 
 2. Reprendre le Dockerfile de la [Partie 2](#partie-2--docker) et le modifier pour que `WORDPRESS_DB_HOST` soit défini avec l'`Adresse IP publique` de notre instance de base de donnée.
 3. Reconstruire notre image docker et la pousser sur notre Artifact Registry en utilisant cloud build
@@ -177,7 +177,7 @@ Notre but, ne l'oublions pas est de déployer wordpress sur Cloud Run puis Kuber
    Appliquer les changements sur votre projet gcp avec les commandes terraform puis rendez vous sur https://console.cloud.google.com/run pendant le déploiement.
 
 2. Observer les journaux de Cloud Run (logs) sur : https://console.cloud.google.com/run/detail/us-central1/serveur-wordpress/logs.
-   1. Véirifer la présence de l'entrée `No 'wp-config.php' found in /var/www/html, but 'WORDPRESS_...' variables supplied; copying 'wp-config-docker.php' (WORDPRESS_DB_HOST WORDPRESS_DB_PASSWORD WORDPRESS_DB_USER)`
+   1. Véirifer la présence de l'entrée `No 'wp-config.php' found in /var/www/html, but 'WORDPRESS_...' variables supplied; copying 'wp-config-docker.php' (WORDPRESS_DB_HOST WORDPRESS_DB_PASSWORD WORDPRESS_DB_USER)`  ![wordpress_logwp](./images/logwp.png) 
    2. Au bout de 5 min, que se passe-t-il ? 🤯🤯🤯
    3. Regarder le resultat de votre commande `terraform apply` et observer les logs de Cloud Run
 
@@ -191,7 +191,7 @@ Notre but, ne l'oublions pas est de déployer wordpress sur Cloud Run puis Kuber
 5. Accéder à notre Wordpress déployé 🚀
    1. Aller sur : https://console.cloud.google.com/run/detail/us-central1/serveur-wordpress/metrics?
    2. Cliquer sur l'URL de votre Cloud Run : similaire à https://serveur-wordpress-oreldffftq-uc.a.run.app
-   3. Que voyez vous ? 🙈
+   3. Que voyez vous ? 🙈  ![wordpress_urlwp](./images/urlWP.png) 
 
 
 6. Afin d'avoir un déploiement plus robuste pour l'entreprise et économiser les coûts du service CloudSQL, nous allons déployer Wordpress sur Kubernetes
