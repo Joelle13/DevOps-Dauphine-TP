@@ -79,24 +79,42 @@ Wordpress dispose d'une image Docker officielle disponible sur [DockerHub](https
 
 1. Récupérer l'image sur votre machine (Cloud Shell)
 
+  Avec la commande : docker pull wordpress
+
 2. Lancer l'image docker et ouvrez un shell à l'intérieur de votre container:
+    docker run --name wordpress-container -p 8080:80 -d wordpress
+    pour lancer un shell à l'intérieur : docker exec -it 250 bash
    1. Quel est le répertoire courant du container (WORKDIR) ?
+  pwd : /var/www/html
    2. Quelles sont les différents fichiers html contenu dans WORKDIR ?
+     ls *.html : readme.html
 
 3. Supprimez le container puis relancez en un en spécifiant un port binding (une correspondance de port).
-
+  docker stop id-conteneur
+  docker rm id-conteneur
    1. Vous devez pouvoir communiquer avec le port par défaut de wordpress : **80** (choisissez un port entre 8000 et 9000 sur votre machine hôte => cloudshell)
+   docker run --name wordpress-container -p 8080:80 -d wordpress
 
    2. Avec la commande `curl`, faites une requêtes depuis votre machine hôte à votre container wordpress. Quelle est la réponse ? (il n'y a pas piège, essayez sur un port non utilisé pour constater la différence)
+     ![wordpress_curl_output](./images/curl-output.png)
 
    3. Afficher les logs de votre container après avoir fait quelques requêtes, que voyez vous ?
+     docker logs ID_CONTENEUR
+     ![wordpress_logs_container](./images/logs-container.png)
    4. Utilisez l'aperçu web pour afficher le résultat du navigateur qui se connecte à votre container wordpress
       1. Utiliser la fonction `Aperçu sur le web`
         ![web_preview](images/wordpress_preview.png)
+          On arrive sur la page de WordPress avec la séléction des langues.
       2. Modifier le port si celui choisi n'est pas `8000`
       3. Une fenètre s'ouvre, que voyez vous ?
+        ![wordpress_port_8000](./images/port8000.png)
 
 4. A partir de la documentation, remarquez les paramètres requis pour la configuration de la base de données.
+  D'après la documentation de WordPress, il faut les paramètres suivants pour configurer la base de données : 
+    - -e WORDPRESS_DB_HOST=...
+    - -e WORDPRESS_DB_USER=...
+    - -e WORDPRESS_DB_PASSWORD=...
+    - -e WORDPRESS_DB_NAME=...
 
 5. Dans la partie 1 du TP (si pas déjà fait), nous allons créer cette base de donnée. Dans cette partie 2 nous allons créer une image docker qui utilise des valeurs spécifiques de paramètres pour la base de données.
    1. Créer un Dockerfile
@@ -106,12 +124,15 @@ Wordpress dispose d'une image Docker officielle disponible sur [DockerHub](https
         - `WORDPRESS_DB_NAME=wordpress`
         - `WORDPRESS_DB_HOST=0.0.0.0`
    3. Construire l'image docker.
+     docker build -t docker-image:0.1 .
    4. Lancer une instance de l'image, ouvrez un shell. Vérifier le résultat de la commande `echo $WORDPRESS_DB_PASSWORD`
+  ![wordpress_echo](./images/echopwd.png)
 
 6. Pipeline d'Intégration Continue (CI):
    1. Créer un dépôt de type `DOCKER` sur artifact registry (si pas déjà fait, sinon utiliser celui appelé `website-tools`)
    2. Créer une configuration cloudbuild pour construire l'image docker et la publier sur le depôt Artifact Registry
    3. Envoyer (`submit`) le job sur Cloud Build et vérifier que l'image a bien été créée
+    ![wordpress_image_Artifact](./images/imageAR.png) 
 
 ## Partie 3 : Déployer Wordpress sur Cloud Run puis Kubernetes 🔥
 
