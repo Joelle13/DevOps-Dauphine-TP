@@ -1,27 +1,34 @@
-# Activer les APIs nécessaires
+# Activation des APIs nécessaires
+
+#cloudresourcemanager.googleapis.com
 resource "google_project_service" "ressource_manager" {
     service = "cloudresourcemanager.googleapis.com"
 }
 
+#serviceusage.googleapis.com
 resource "google_project_service" "ressource_usage" {
     service = "serviceusage.googleapis.com"
     depends_on = [ google_project_service.ressource_manager ]
 }
 
+#artifactregistry.googleapis.com
 resource "google_project_service" "artifact" {
     service = "artifactregistry.googleapis.com"
     depends_on = [ google_project_service.ressource_manager ]
 }
 
+#sqladmin.googleapis.com
 resource "google_project_service" "sql" {
   service = "sqladmin.googleapis.com"
   depends_on = [ google_project_service.ressource_manager ]
 }
 
+#cloudbuild.googleapis.com
 resource "google_project_service" "cloud_build" {
   service = "cloudbuild.googleapis.com"
   depends_on = [ google_project_service.ressource_manager ]
 }
+
 # Créer le repository Artifact Registry
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"

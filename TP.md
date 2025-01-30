@@ -35,6 +35,11 @@ Nous allons créer les ressources suivantes à l'aide de Terraform :
 - un compte utilisateur de la base de données
 
 1. Commencer par créer le bucket GCS (Google Cloud Storage) qui servira à stocker le state Terraform.
+Avec ces commandes : 
+- gcloud services enable cloudbuild. PROJECT_ID=$(gcloud config get-value project)
+- gsutil mb gs://${PROJECT_ID}-tfstate
+Ou sinon aller directement sur l'interface Bucket de GCP et le créer à la main (ce que j'ai fait car erreur de permission)
+
 2. Définir les éléments de base nécessaires à la bonne exécution de terraform : utiliser l'exemple sur le [repo du cours](https://github.com/aballiet/devops-dauphine-2024/tree/main/exemple/cloudbuild-terraform) si besoin pour vous aider
 3. Afin de créer la base de données, utiliser la documentation [SQL Database](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database) et enfin un [SQL User](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_user)
    1. Pour `google_sql_database`, définir `name="wordpress"` et `instance="main-instance"`
@@ -46,9 +51,24 @@ Nous allons créer les ressources suivantes à l'aide de Terraform :
          password = "ilovedevops"
       }
       ```
+
+Ajout du main.tf.
 4. Lancer `terraform plan`, vérifier les changements puis appliquer les changements avec `terraform apply`
+Lancement des commandes :
+- terraform init : Terraform has been successfully initialized!
+- terraform plan : Plan: 8 to add, 0 to change, 0 to destroy.
+- terraform apply : Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
+
 5. Vérifier que notre utilisateur existe bien : https://console.cloud.google.com/sql/instances/main-instance/users (veiller à bien séléctionner le projet GCP sur lequel vous avez déployé vos ressources)
+L'utilisateur wordpress existe bien.
 6. Rendez-vous sur https://console.cloud.google.com/sql/instances/main-instance/databases. Quelles sont les base de données présentes sur votre instance `main-instance` ? Quels sont les types ?
+![wordpress_bdd](./images/baseDeDonnéesMainInstance.png)
+Les bases de données présentes sont :
+- information_schema de type Système
+- mysql de type Système
+- performance_schema de type Système
+- sys de type Système
+- wordpress de type Utilisateur
 
 ## Partie 2 : Docker
 
