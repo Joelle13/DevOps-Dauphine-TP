@@ -34,9 +34,8 @@ Nous allons créer les ressources suivantes à l'aide de Terraform :
 
 - un compte utilisateur de la base de données
 
-1. Commencer par créer le bucket GCS (Google Cloud Storage) qui servira à stocker le state Terraform.
-
-Avec ces commandes : 
+1. Commencer par créer le bucket GCS (Google Cloud Storage) qui servira à stocker le state Terraform.  
+***Avec ces commandes : ***
 - gcloud services enable cloudbuild. PROJECT_ID=$(gcloud config get-value project)
 - gsutil mb gs://${PROJECT_ID}-tfstate
 Ou sinon aller directement sur l'interface Bucket de GCP et le créer à la main (ce que j'ai fait car erreur de permission)
@@ -54,19 +53,19 @@ Ou sinon aller directement sur l'interface Bucket de GCP et le créer à la main
       }
       ```
 
-Ajout du main.tf.
-4. Lancer `terraform plan`, vérifier les changements puis appliquer les changements avec `terraform apply`
-Lancement des commandes :
+***Ajout du main.tf.***
+4. Lancer `terraform plan`, vérifier les changements puis appliquer les changements avec `terraform apply`  
+***Lancement des commandes :***
 - terraform init : Terraform has been successfully initialized!
 - terraform plan : Plan: 8 to add, 0 to change, 0 to destroy.
 - terraform apply : Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
 
 5. Vérifier que notre utilisateur existe bien : https://console.cloud.google.com/sql/instances/main-instance/users (veiller à bien séléctionner le projet GCP sur lequel vous avez déployé vos ressources)
-L'utilisateur wordpress existe bien.
+***L'utilisateur wordpress existe bien.***
 ![wordpress_user](./images/user.png)
-6. Rendez-vous sur https://console.cloud.google.com/sql/instances/main-instance/databases. Quelles sont les base de données présentes sur votre instance `main-instance` ? Quels sont les types ?
-![wordpress_bdd](./images/baseDeDonnéesMainInstance.png)
-Les bases de données présentes sont :
+6. Rendez-vous sur https://console.cloud.google.com/sql/instances/main-instance/databases. Quelles sont les base de données présentes sur votre instance `main-instance` ? Quels sont les types ?  
+![wordpress_bdd](./images/baseDeDonnéesMainInstance.png)  
+***Les bases de données présentes sont :***  
 - information_schema de type Système
 - mysql de type Système
 - performance_schema de type Système
@@ -77,40 +76,40 @@ Les bases de données présentes sont :
 
 Wordpress dispose d'une image Docker officielle disponible sur [DockerHub](https://hub.docker.com/_/wordpress)
 
-1. Récupérer l'image sur votre machine (Cloud Shell)
+1. Récupérer l'image sur votre machine (Cloud Shell)  
 
-  Avec la commande : docker pull wordpress
+  ***Avec la commande : docker pull wordpress***
 
-2. Lancer l'image docker et ouvrez un shell à l'intérieur de votre container:
-    docker run --name wordpress-container -p 8080:80 -d wordpress
-    pour lancer un shell à l'intérieur : docker exec -it 250 bash
-   1. Quel est le répertoire courant du container (WORKDIR) ?
-  pwd : /var/www/html
-   2. Quelles sont les différents fichiers html contenu dans WORKDIR ?
-     ls *.html : readme.html
+2. Lancer l'image docker et ouvrez un shell à l'intérieur de votre container:   
+    ***docker run --name wordpress-container -p 8080:80 -d wordpress***
+    ***pour lancer un shell à l'intérieur : docker exec -it 250 bash***
+   1. Quel est le répertoire courant du container (WORKDIR) ?  
+  ***pwd : /var/www/html***
+   2. Quelles sont les différents fichiers html contenu dans WORKDIR ?  
+     ***ls *.html : readme.html***
 
-3. Supprimez le container puis relancez en un en spécifiant un port binding (une correspondance de port).
-  docker stop id-conteneur
-  docker rm id-conteneur
-   1. Vous devez pouvoir communiquer avec le port par défaut de wordpress : **80** (choisissez un port entre 8000 et 9000 sur votre machine hôte => cloudshell)
-   docker run --name wordpress-container -p 8080:80 -d wordpress
+3. Supprimez le container puis relancez en un en spécifiant un port binding (une correspondance de port).  
+ ***docker stop id-conteneur***
+  ***docker rm id-conteneur***
+   1. Vous devez pouvoir communiquer avec le port par défaut de wordpress : **80** (choisissez un port entre 8000 et 9000 sur votre machine hôte => cloudshell)  
+   ***docker run --name wordpress-container -p 8080:80 -d wordpress***
 
    2. Avec la commande `curl`, faites une requêtes depuis votre machine hôte à votre container wordpress. Quelle est la réponse ? (il n'y a pas piège, essayez sur un port non utilisé pour constater la différence)
      ![wordpress_curl_output](./images/curl-output.png)
 
-   3. Afficher les logs de votre container après avoir fait quelques requêtes, que voyez vous ?
-     docker logs ID_CONTENEUR
+   3. Afficher les logs de votre container après avoir fait quelques requêtes, que voyez vous ?  
+     ***docker logs ID_CONTENEUR***
      ![wordpress_logs_container](./images/logs-container.png)
    4. Utilisez l'aperçu web pour afficher le résultat du navigateur qui se connecte à votre container wordpress
       1. Utiliser la fonction `Aperçu sur le web`
-        ![web_preview](images/wordpress_preview.png)
-          On arrive sur la page de WordPress avec la séléction des langues.
+        ![web_preview](images/wordpress_preview.png)  
+          ***On arrive sur la page de WordPress avec la séléction des langues.***
       2. Modifier le port si celui choisi n'est pas `8000`
       3. Une fenètre s'ouvre, que voyez vous ?
         ![wordpress_port_8000](./images/port8000.png)
 
-4. A partir de la documentation, remarquez les paramètres requis pour la configuration de la base de données.
-  D'après la documentation de WordPress, il faut les paramètres suivants pour configurer la base de données : 
+4. A partir de la documentation, remarquez les paramètres requis pour la configuration de la base de données.  
+  ***D'après la documentation de WordPress, il faut les paramètres suivants pour configurer la base de données : ***
     - -e WORDPRESS_DB_HOST=...
     - -e WORDPRESS_DB_USER=...
     - -e WORDPRESS_DB_PASSWORD=...
