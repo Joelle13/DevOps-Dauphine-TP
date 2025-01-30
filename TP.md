@@ -35,10 +35,12 @@ Nous allons créer les ressources suivantes à l'aide de Terraform :
 - un compte utilisateur de la base de données
 
 1. Commencer par créer le bucket GCS (Google Cloud Storage) qui servira à stocker le state Terraform.
+
 Avec ces commandes : 
 - gcloud services enable cloudbuild. PROJECT_ID=$(gcloud config get-value project)
 - gsutil mb gs://${PROJECT_ID}-tfstate
 Ou sinon aller directement sur l'interface Bucket de GCP et le créer à la main (ce que j'ai fait car erreur de permission)
+![wordpress_bucket](./images/bucket.png)
 
 2. Définir les éléments de base nécessaires à la bonne exécution de terraform : utiliser l'exemple sur le [repo du cours](https://github.com/aballiet/devops-dauphine-2024/tree/main/exemple/cloudbuild-terraform) si besoin pour vous aider
 3. Afin de créer la base de données, utiliser la documentation [SQL Database](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database) et enfin un [SQL User](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_user)
@@ -61,6 +63,7 @@ Lancement des commandes :
 
 5. Vérifier que notre utilisateur existe bien : https://console.cloud.google.com/sql/instances/main-instance/users (veiller à bien séléctionner le projet GCP sur lequel vous avez déployé vos ressources)
 L'utilisateur wordpress existe bien.
+![wordpress_user](./images/user.png)
 6. Rendez-vous sur https://console.cloud.google.com/sql/instances/main-instance/databases. Quelles sont les base de données présentes sur votre instance `main-instance` ? Quels sont les types ?
 ![wordpress_bdd](./images/baseDeDonnéesMainInstance.png)
 Les bases de données présentes sont :
