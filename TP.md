@@ -230,8 +230,12 @@ Notre but, ne l'oublions pas est de déployer wordpress sur Cloud Run puis Kuber
 Configuration des variables de la base de données (WORDPRESS_DB_HOST, WORDPRESS_DB_USER, WORDPRESS_DB_PASSWORD).
 Configuration du provider Kubernetes (host, token, cluster_ca_certificate).
 Définitions des services Cloud SQL, Artifact Registry, Cloud Run et Kubernetes qui pourraient être générées dynamiquement.  
-Amélioration possible est d'utiliser des variables Terraform (variables.tf) pour éviter la répétition des mêmes valeurs.
+Amélioration possible est d'utiliser des variables Terraform (variables.tf) pour éviter la répétition des mêmes valeurs.  
+
    2. Quel outil pouvons nous utiliser pour déployer Wordpress sur Kubernetes ? Faites les changements nécessaires dans votre code Terraform.    
+
    Utiliser Helm Charts pour déployer WordPress sur Kubernetes plus efficacement.  
+
    3. Comment pourrions nous enlever le mot de passe en clair dans notre code Terraform ? Quelle ressource Kubernetes pouvons nous utiliser pour le stocker ? Faites les changements nécessaires dans votre code Terraform.  
+
    Actuellement, le mot de passe MySQL (ilovedevops) est stocké en clair dans Terraform. On peut alors utiliser Kubernetes Secrets pour injecter les valeurs dans WordPress et MySQL.
