@@ -218,7 +218,7 @@ Notre but, ne l'oublions pas est de déployer wordpress sur Cloud Run puis Kuber
    Give me the terraform code to deploy wordpress on kubernetes using kubernetes provider. I want to use MySQL.
    ```
 
-   4. Rendez vous sur l'adresse IP publique du service kubernetes Wordpress et vérifiez que Wordpress fonctionne 🔥
+   4. Rendez vous sur l'adresse IP publique du service kubernetes Wordpress et vérifiez que Wordpress fonctionne 🔥  ![wordpress_kubdeploy](./images/kubdeploy.png) 
 
 
 ## BONUS : Partie 4
